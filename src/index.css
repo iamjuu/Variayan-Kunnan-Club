@@ -1,0 +1,198 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-primary: #14532d;
+  --color-primary-50: #effaf3;
+  --color-primary-100: #d8f2e0;
+  --color-primary-200: #b3e4c5;
+  --color-primary-300: #7fce9f;
+  --color-primary-400: #47b076;
+  --color-primary-500: #23935a;
+  --color-primary-600: #167647;
+  --color-primary-700: #145e3a;
+  --color-primary-800: #14532d;
+  --color-primary-900: #0e3b21;
+  --color-primary-950: #072314;
+
+  --color-accent: #d4a373;
+  --color-accent-50: #fbf6f0;
+  --color-accent-100: #f5e9da;
+  --color-accent-200: #ead2b5;
+  --color-accent-300: #deb78b;
+  --color-accent-400: #d4a373;
+  --color-accent-500: #c4864f;
+  --color-accent-600: #ad6d40;
+  --color-accent-700: #8f5536;
+
+  --color-canvas: #f8faf9;
+  --color-ink: #0f1f17;
+
+  --font-sans: 'Plus Jakarta Sans', 'Noto Sans Malayalam', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fraunces', 'Noto Sans Malayalam', ui-serif, Georgia, serif;
+
+  --spacing-13: 3.25rem;
+  --spacing-18: 4.5rem;
+
+  --shadow-soft: 0 1px 2px rgb(15 31 23 / 0.04), 0 8px 24px -12px rgb(15 31 23 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(15 31 23 / 0.04), 0 18px 40px -18px rgb(20 83 45 / 0.35);
+
+  --animate-fade-up: fade-up 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-kasavu-shift: kasavu-shift 10s linear infinite;
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes kasavu-shift {
+    to {
+      background-position: 200% 0;
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-canvas font-sans text-ink antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary-500;
+  }
+  input[type='date']::-webkit-calendar-picker-indicator {
+    opacity: 0.55;
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  /* Gold "kasavu" border inspired by the Kerala saree. */
+  .kasavu {
+    background-image: linear-gradient(90deg, var(--color-accent-400), var(--color-accent-300) 40%, var(--color-accent-500));
+  }
+  .kasavu-pattern {
+    background-image:
+      radial-gradient(circle at 1px 1px, rgb(212 163 115 / 0.45) 1px, transparent 0),
+      linear-gradient(135deg, transparent 0 46%, rgb(212 163 115 / 0.18) 46% 54%, transparent 54% 100%);
+    background-size: 18px 18px, 36px 36px;
+  }
+  .card {
+    @apply rounded-2xl border border-primary-900/8 bg-white shadow-soft;
+  }
+  .table-head {
+    @apply bg-primary-50/60 text-left text-xs font-semibold tracking-wide text-primary-900/70 uppercase;
+  }
+  .hero-kerala {
+    background:
+      radial-gradient(ellipse 80% 60% at 12% 0%, rgb(212 163 115 / 0.22), transparent 55%),
+      radial-gradient(ellipse 50% 50% at 92% 88%, rgb(36 148 90 / 0.28), transparent 50%),
+      linear-gradient(165deg, #072314 0%, #0e3b21 46%, #14532d 100%);
+  }
+  .hero-photo-bw {
+    filter: grayscale(1) contrast(1.05);
+  }
+  .hero-photo-color {
+    opacity: 0;
+    pointer-events: none;
+    -webkit-mask-image: radial-gradient(
+      circle var(--spot-size, 0px) at var(--spot-x, 50%) var(--spot-y, 50%),
+      #000 0%,
+      #000 36%,
+      rgba(0, 0, 0, 0.55) 58%,
+      transparent 74%
+    );
+    mask-image: radial-gradient(
+      circle var(--spot-size, 0px) at var(--spot-x, 50%) var(--spot-y, 50%),
+      #000 0%,
+      #000 36%,
+      rgba(0, 0, 0, 0.55) 58%,
+      transparent 74%
+    );
+  }
+  .hero-photo-color.is-revealed {
+    opacity: 1;
+  }
+  .kasavu-shimmer {
+    background-image: linear-gradient(90deg, #ad6d40, #deb78b 28%, #f5e9da 50%, #d4a373 72%, #8f5536);
+    background-size: 200% 100%;
+    animation: kasavu-shift 10s linear infinite;
+  }
+  .gallery-mosaic {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-auto-rows: 120px;
+    gap: 14px;
+  }
+  .gallery-mosaic[data-variant='hero'] {
+    grid-auto-rows: 96px;
+  }
+  .gallery-mosaic[data-variant='page'] .gallery-tile:nth-child(8n + 1),
+  .gallery-mosaic[data-variant='hero'] .gallery-tile:nth-child(6n + 1) {
+    grid-column: span 7;
+    grid-row: span 3;
+  }
+  .gallery-mosaic[data-variant='page'] .gallery-tile:nth-child(8n + 2),
+  .gallery-mosaic[data-variant='hero'] .gallery-tile:nth-child(6n + 2) {
+    grid-column: span 5;
+    grid-row: span 2;
+  }
+  .gallery-mosaic[data-variant='page'] .gallery-tile:nth-child(8n + 3),
+  .gallery-mosaic[data-variant='hero'] .gallery-tile:nth-child(6n + 3) {
+    grid-column: span 5;
+    grid-row: span 3;
+  }
+  .gallery-mosaic[data-variant='page'] .gallery-tile:nth-child(8n + 4),
+  .gallery-mosaic[data-variant='hero'] .gallery-tile:nth-child(6n + 4) {
+    grid-column: span 7;
+    grid-row: span 2;
+  }
+  .gallery-mosaic[data-variant='page'] .gallery-tile:nth-child(8n + 5) {
+    grid-column: span 4;
+    grid-row: span 3;
+  }
+  .gallery-mosaic[data-variant='page'] .gallery-tile:nth-child(8n + 6),
+  .gallery-mosaic[data-variant='hero'] .gallery-tile:nth-child(6n + 5) {
+    grid-column: span 4;
+    grid-row: span 2;
+  }
+  .gallery-mosaic[data-variant='page'] .gallery-tile:nth-child(8n + 7) {
+    grid-column: span 4;
+    grid-row: span 2;
+  }
+  .gallery-mosaic[data-variant='page'] .gallery-tile:nth-child(8n + 8),
+  .gallery-mosaic[data-variant='hero'] .gallery-tile:nth-child(6n + 6) {
+    grid-column: span 4;
+    grid-row: span 3;
+  }
+  @media (max-width: 640px) {
+    .gallery-mosaic {
+      grid-template-columns: 1fr 1fr;
+      grid-auto-rows: 132px;
+    }
+    .gallery-mosaic .gallery-tile {
+      grid-column: span 1 !important;
+      grid-row: span 1 !important;
+    }
+    .gallery-mosaic .gallery-tile:nth-child(3n + 1) {
+      grid-column: span 2 !important;
+      grid-row: span 2 !important;
+    }
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white;
+  }
+}
